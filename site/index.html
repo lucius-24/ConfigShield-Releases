@@ -7,23 +7,23 @@
   <meta name="description" content="ConfigShield 是面向网络设备的配置安全治理平台，支持配置备份、巡检、差异分析、风险发现和报告输出。">
   <style>
     :root {
-      --ink: #102033;
-      --muted: #5b6f86;
-      --line: #dbe5ee;
-      --panel: #ffffff;
-      --panel-soft: #f5f8fb;
-      --cyan: #00a8df;
-      --blue: #1769e0;
-      --green: #1fba77;
-      --amber: #e59b22;
-      --danger: #ef5e64;
-      --deep: #071421;
-      --deep-2: #0d2236;
-      --shadow: 0 22px 70px rgba(9, 28, 48, 0.18);
+      --bg: #07131f;
+      --bg-2: #0b1b2a;
+      --panel: #0f2436;
+      --panel-2: #132c42;
+      --line: rgba(138, 177, 209, 0.22);
+      --text: #edf6ff;
+      --muted: #92a9c1;
+      --soft: #c6d8e8;
+      --cyan: #2ec7ff;
+      --blue: #4d8dff;
+      --green: #34d399;
+      --amber: #f6b547;
+      --danger: #ff6b73;
       --radius: 8px;
       font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
-      color: var(--ink);
-      background: #f7fafc;
+      color: var(--text);
+      background: var(--bg);
     }
 
     * {
@@ -32,13 +32,39 @@
 
     html {
       scroll-behavior: smooth;
+      background: var(--bg);
     }
 
     body {
       margin: 0;
+      min-height: 100vh;
       background:
-        linear-gradient(180deg, rgba(247, 250, 252, 0.96), rgba(239, 245, 249, 1)),
-        #f7fafc;
+        linear-gradient(180deg, rgba(7, 19, 31, 0.96), rgba(6, 16, 27, 1)),
+        var(--bg);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.85), rgba(0,0,0,0.18));
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(46, 199, 255, 0.18), transparent 28%),
+        radial-gradient(circle at 82% 20%, rgba(52, 211, 153, 0.12), transparent 26%),
+        linear-gradient(135deg, rgba(46, 199, 255, 0.04), transparent 38%);
+      pointer-events: none;
     }
 
     a {
@@ -46,31 +72,27 @@
       text-decoration: none;
     }
 
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
     .topbar {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      inset: 0 0 auto;
       z-index: 50;
-      border-bottom: 1px solid rgba(219, 229, 238, 0.18);
-      background: rgba(7, 20, 33, 0.78);
+      border-bottom: 1px solid var(--line);
+      background: rgba(7, 19, 31, 0.82);
       backdrop-filter: blur(18px);
     }
 
-    .nav {
+    .nav,
+    .section-inner {
       width: min(1180px, calc(100% - 40px));
-      height: 68px;
       margin: 0 auto;
+    }
+
+    .nav {
+      height: 68px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 24px;
-      color: #eef7ff;
     }
 
     .brand {
@@ -80,23 +102,32 @@
       min-width: 0;
     }
 
-    .brand img {
-      width: 38px;
-      height: 38px;
-      object-fit: contain;
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(46, 199, 255, 0.42);
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, rgba(46, 199, 255, 0.22), rgba(52, 211, 153, 0.08));
+      box-shadow: inset 0 0 24px rgba(46, 199, 255, 0.1);
+      color: #dff8ff;
+      font-weight: 900;
     }
 
     .brand strong {
       font-size: 19px;
-      font-weight: 800;
+      font-weight: 900;
       white-space: nowrap;
+      letter-spacing: 0;
     }
 
     .navlinks {
       display: flex;
       align-items: center;
       gap: 22px;
-      color: rgba(238, 247, 255, 0.78);
+      color: rgba(237, 246, 255, 0.72);
       font-size: 14px;
     }
 
@@ -105,49 +136,58 @@
     }
 
     .nav-cta {
+      min-height: 38px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 38px;
       padding: 0 16px;
-      border: 1px solid rgba(0, 168, 223, 0.45);
+      border: 1px solid rgba(46, 199, 255, 0.5);
       border-radius: 6px;
-      background: rgba(0, 168, 223, 0.12);
-      color: #f3fbff;
-      font-weight: 700;
+      background: rgba(46, 199, 255, 0.1);
+      color: #f5fcff;
+      font-weight: 800;
     }
 
     .hero {
+      min-height: 94vh;
       position: relative;
-      min-height: 92vh;
       display: flex;
       align-items: center;
       overflow: hidden;
-      background: var(--deep);
-      color: #f2f8ff;
+      border-bottom: 1px solid var(--line);
     }
 
     .hero::before {
       content: "";
       position: absolute;
-      inset: 0;
+      width: min(620px, 70vw);
+      aspect-ratio: 1;
+      right: max(20px, calc((100vw - 1180px) / 2));
+      top: 50%;
+      transform: translateY(-50%);
+      border: 1px solid rgba(46, 199, 255, 0.2);
+      border-radius: 50%;
       background:
-        linear-gradient(90deg, rgba(7, 20, 33, 0.94) 0%, rgba(7, 20, 33, 0.8) 38%, rgba(7, 20, 33, 0.22) 100%),
-        linear-gradient(180deg, rgba(7, 20, 33, 0.1), rgba(7, 20, 33, 0.76)),
-        url("assets/screenshots/dashboard.png") center right / cover no-repeat;
-      transform: scale(1.02);
+        linear-gradient(90deg, transparent 49.5%, rgba(46, 199, 255, 0.18) 50%, transparent 50.5%),
+        linear-gradient(0deg, transparent 49.5%, rgba(46, 199, 255, 0.18) 50%, transparent 50.5%),
+        radial-gradient(circle, transparent 0 35%, rgba(46, 199, 255, 0.08) 36% 36.5%, transparent 37% 52%, rgba(52, 211, 153, 0.08) 53% 53.5%, transparent 54%);
+      opacity: 0.72;
     }
 
     .hero::after {
       content: "";
       position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-      background-size: 48px 48px;
-      opacity: 0.32;
-      pointer-events: none;
+      width: min(430px, 58vw);
+      aspect-ratio: 1;
+      right: max(96px, calc((100vw - 1000px) / 2));
+      top: 50%;
+      transform: translateY(-50%) rotate(18deg);
+      border: 1px solid rgba(198, 216, 232, 0.16);
+      background:
+        linear-gradient(135deg, rgba(46, 199, 255, 0.12), rgba(52, 211, 153, 0.05)),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 38px);
+      clip-path: polygon(50% 0, 100% 26%, 86% 100%, 14% 100%, 0 26%);
+      opacity: 0.5;
     }
 
     .hero-inner {
@@ -155,17 +195,17 @@
       z-index: 2;
       width: min(1180px, calc(100% - 40px));
       margin: 0 auto;
-      padding: 118px 0 70px;
+      padding: 126px 0 116px;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 18px;
-      color: #83dcff;
+      margin-bottom: 20px;
+      color: #85e4ff;
       font-size: 13px;
-      font-weight: 800;
+      font-weight: 900;
     }
 
     .eyebrow::before {
@@ -176,20 +216,20 @@
     }
 
     .hero h1 {
-      max-width: 760px;
+      max-width: 780px;
       margin: 0;
-      font-size: clamp(40px, 7vw, 86px);
+      font-size: clamp(40px, 7vw, 88px);
       line-height: 1.02;
-      font-weight: 900;
       letter-spacing: 0;
+      font-weight: 900;
     }
 
     .hero p {
-      max-width: 640px;
+      max-width: 650px;
       margin: 24px 0 0;
-      color: rgba(242, 248, 255, 0.82);
-      font-size: clamp(17px, 2.1vw, 22px);
-      line-height: 1.7;
+      color: rgba(237, 246, 255, 0.78);
+      font-size: clamp(17px, 2vw, 22px);
+      line-height: 1.75;
     }
 
     .hero-actions {
@@ -200,14 +240,14 @@
     }
 
     .button {
+      min-height: 48px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 48px;
       padding: 0 20px;
       border-radius: 6px;
-      font-weight: 800;
-      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+      font-weight: 900;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
     }
 
     .button:hover {
@@ -215,59 +255,76 @@
     }
 
     .button.primary {
-      background: #22b8f2;
-      color: #04101b;
-      box-shadow: 0 16px 34px rgba(34, 184, 242, 0.28);
+      color: #04131f;
+      background: var(--cyan);
+      box-shadow: 0 18px 48px rgba(46, 199, 255, 0.22);
     }
 
     .button.secondary {
-      border: 1px solid rgba(236, 247, 255, 0.34);
-      color: #f4fbff;
-      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(198, 216, 232, 0.32);
+      background: rgba(255, 255, 255, 0.05);
+      color: #f1f8ff;
+    }
+
+    .button.dark {
+      color: #06131f;
+      background: var(--green);
     }
 
     .hero-metrics {
-      width: min(1180px, calc(100% - 40px));
       position: absolute;
       z-index: 3;
       left: 50%;
       bottom: 24px;
       transform: translateX(-50%);
+      width: min(1180px, calc(100% - 40px));
       display: grid;
       grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--line);
+      background: rgba(198, 216, 232, 0.1);
       gap: 1px;
-      border: 1px solid rgba(203, 226, 244, 0.18);
-      background: rgba(203, 226, 244, 0.14);
+    }
+
+    .metric,
+    .pain,
+    .feature,
+    .edition,
+    .step,
+    .flow-card,
+    .download-panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015)),
+        var(--panel);
+      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.18);
     }
 
     .metric {
-      min-height: 86px;
+      min-height: 88px;
       padding: 18px;
-      background: rgba(7, 20, 33, 0.72);
+      border: 0;
+      border-radius: 0;
+      background: rgba(9, 28, 45, 0.72);
     }
 
     .metric strong {
       display: block;
-      color: #ffffff;
-      font-size: 24px;
+      font-size: 23px;
       line-height: 1.1;
     }
 
     .metric span {
       display: block;
       margin-top: 8px;
-      color: rgba(238, 247, 255, 0.7);
+      color: rgba(237, 246, 255, 0.66);
       font-size: 13px;
       line-height: 1.45;
     }
 
     section {
       padding: 78px 0;
-    }
-
-    .section-inner {
-      width: min(1180px, calc(100% - 40px));
-      margin: 0 auto;
+      border-bottom: 1px solid rgba(138, 177, 209, 0.12);
     }
 
     .section-head {
@@ -277,7 +334,7 @@
 
     .section-kicker {
       margin: 0 0 10px;
-      color: var(--blue);
+      color: #7bdcff;
       font-size: 13px;
       font-weight: 900;
     }
@@ -304,37 +361,33 @@
     }
 
     .pain,
-    .feature,
-    .edition,
-    .step {
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--panel);
-      box-shadow: 0 10px 34px rgba(22, 55, 82, 0.07);
-    }
-
-    .pain {
+    .feature {
+      min-height: 168px;
       padding: 22px;
     }
 
-    .pain b {
+    .pain b,
+    .feature h3,
+    .edition h3,
+    .step h3,
+    .flow-card h3 {
       display: block;
-      margin-bottom: 10px;
-      font-size: 18px;
+      margin: 0 0 12px;
+      font-size: 20px;
+      color: #ffffff;
     }
 
     .pain p,
     .feature p,
     .edition p,
-    .step p {
+    .step p,
+    .flow-card p {
       margin: 0;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.72;
     }
 
     .feature {
-      min-height: 180px;
-      padding: 22px;
       position: relative;
       overflow: hidden;
     }
@@ -343,72 +396,82 @@
       content: attr(data-no);
       position: absolute;
       right: 16px;
-      top: 12px;
-      color: rgba(23, 105, 224, 0.12);
+      top: 8px;
+      color: rgba(46, 199, 255, 0.14);
       font-size: 54px;
       font-weight: 900;
     }
 
-    .feature h3 {
+    .feature h3,
+    .feature p {
       position: relative;
-      margin: 0 0 12px;
-      font-size: 20px;
+      z-index: 1;
     }
 
-    .showcase {
-      background: var(--deep);
-      color: #edf6ff;
-      overflow: hidden;
-    }
-
-    .showcase .section-kicker {
-      color: #6dd6ff;
-    }
-
-    .showcase .section-head p {
-      color: rgba(237, 246, 255, 0.72);
-    }
-
-    .screens {
+    .flow {
       display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-columns: 0.95fr 1.05fr;
       gap: 18px;
-      align-items: start;
+      align-items: stretch;
     }
 
-    .screen-main,
-    .screen-stack figure {
-      margin: 0;
-      border: 1px solid rgba(154, 190, 220, 0.22);
+    .flow-board {
+      min-height: 440px;
+      position: relative;
+      border: 1px solid var(--line);
       border-radius: var(--radius);
+      background:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(180deg, rgba(13, 34, 54, 0.92), rgba(8, 21, 35, 0.96));
+      background-size: 36px 36px, 36px 36px, auto;
       overflow: hidden;
-      background: #091521;
-      box-shadow: 0 26px 70px rgba(0, 0, 0, 0.34);
     }
 
-    .screen-main figcaption,
-    .screen-stack figcaption {
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 13px 15px;
-      color: rgba(237, 246, 255, 0.78);
-      border-top: 1px solid rgba(154, 190, 220, 0.18);
-      font-size: 14px;
-      line-height: 1.5;
+    .flow-node {
+      position: absolute;
+      min-width: 132px;
+      padding: 13px 14px;
+      border: 1px solid rgba(46, 199, 255, 0.32);
+      border-radius: 8px;
+      background: rgba(7, 19, 31, 0.72);
+      color: #eaf8ff;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
     }
 
-    .screen-stack {
+    .flow-node span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .flow-node:nth-child(1) { left: 8%; top: 12%; }
+    .flow-node:nth-child(2) { right: 10%; top: 18%; }
+    .flow-node:nth-child(3) { left: 18%; top: 46%; }
+    .flow-node:nth-child(4) { right: 12%; top: 54%; }
+    .flow-node:nth-child(5) { left: 34%; bottom: 10%; }
+
+    .flow-line {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(46, 199, 255, 0.55), transparent);
+      transform-origin: left center;
+      opacity: 0.72;
+    }
+
+    .flow-line.l1 { width: 42%; left: 25%; top: 28%; transform: rotate(7deg); }
+    .flow-line.l2 { width: 34%; left: 46%; top: 47%; transform: rotate(44deg); }
+    .flow-line.l3 { width: 36%; left: 28%; top: 60%; transform: rotate(-18deg); }
+    .flow-line.l4 { width: 32%; left: 43%; top: 74%; transform: rotate(14deg); }
+
+    .flow-cards {
       display: grid;
-      gap: 18px;
+      gap: 14px;
     }
 
-    .screen-stack img,
-    .screen-main img {
-      width: 100%;
-      aspect-ratio: 16 / 10;
-      object-fit: cover;
-      object-position: top left;
+    .flow-card {
+      padding: 22px;
     }
 
     .editions {
@@ -422,7 +485,6 @@
     }
 
     .edition h3 {
-      margin: 0 0 14px;
       font-size: 25px;
     }
 
@@ -438,7 +500,6 @@
     .edition li {
       display: flex;
       gap: 10px;
-      align-items: flex-start;
       line-height: 1.55;
     }
 
@@ -452,12 +513,6 @@
       flex: 0 0 auto;
     }
 
-    .delivery {
-      background: var(--panel-soft);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-
     .steps {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -469,25 +524,16 @@
     }
 
     .step span {
+      width: 34px;
+      height: 34px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 34px;
-      height: 34px;
       margin-bottom: 18px;
       border-radius: 6px;
-      background: var(--deep);
-      color: #fff;
+      background: rgba(46, 199, 255, 0.14);
+      color: #b9edff;
       font-weight: 900;
-    }
-
-    .step h3 {
-      margin: 0 0 10px;
-      font-size: 20px;
-    }
-
-    .download {
-      background: #fff;
     }
 
     .download-panel {
@@ -496,12 +542,9 @@
       gap: 26px;
       align-items: center;
       padding: 34px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
       background:
-        linear-gradient(135deg, rgba(0, 168, 223, 0.08), rgba(31, 186, 119, 0.06)),
-        #ffffff;
-      box-shadow: var(--shadow);
+        linear-gradient(135deg, rgba(46, 199, 255, 0.12), rgba(52, 211, 153, 0.08)),
+        var(--panel);
     }
 
     .download-panel h2 {
@@ -516,27 +559,15 @@
     }
 
     .download-actions {
+      min-width: 260px;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      min-width: 260px;
-    }
-
-    .download-actions .button.secondary {
-      color: var(--ink);
-      border-color: var(--line);
-      background: #ffffff;
-    }
-
-    .button.dark {
-      background: var(--deep);
-      color: #ffffff;
     }
 
     footer {
       padding: 34px 0;
-      background: var(--deep);
-      color: rgba(237, 246, 255, 0.72);
+      color: rgba(237, 246, 255, 0.68);
     }
 
     footer .section-inner {
@@ -553,7 +584,12 @@
       }
 
       .hero {
-        min-height: 860px;
+        min-height: 900px;
+      }
+
+      .hero::before,
+      .hero::after {
+        opacity: 0.26;
       }
 
       .hero-metrics,
@@ -563,7 +599,7 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .screens,
+      .flow,
       .download-panel {
         grid-template-columns: 1fr;
       }
@@ -576,28 +612,19 @@
     }
 
     @media (max-width: 640px) {
-      .nav {
-        width: calc(100% - 28px);
-      }
-
-      .brand strong {
-        font-size: 17px;
-      }
-
-      .hero-inner,
+      .nav,
       .section-inner,
+      .hero-inner,
       .hero-metrics {
         width: calc(100% - 28px);
       }
 
       .hero {
-        min-height: 940px;
+        min-height: 1040px;
       }
 
-      .hero::before {
-        background:
-          linear-gradient(180deg, rgba(7, 20, 33, 0.94), rgba(7, 20, 33, 0.78)),
-          url("assets/screenshots/dashboard.png") top center / auto 52% no-repeat;
+      .hero-inner {
+        padding-top: 112px;
       }
 
       .hero-metrics,
@@ -621,6 +648,14 @@
         padding: 58px 0;
       }
 
+      .flow-board {
+        min-height: 500px;
+      }
+
+      .flow-node {
+        min-width: 120px;
+      }
+
       footer .section-inner {
         flex-direction: column;
         align-items: flex-start;
@@ -632,13 +667,13 @@
   <header class="topbar">
     <nav class="nav" aria-label="主导航">
       <a class="brand" href="#top" aria-label="ConfigShield 首页">
-        <img src="assets/logo.png" alt="">
+        <span class="brand-mark">CS</span>
         <strong>ConfigShield</strong>
       </a>
       <div class="navlinks">
         <a href="#value">价值</a>
         <a href="#features">能力</a>
-        <a href="#showcase">界面</a>
+        <a href="#workflow">流程</a>
         <a href="#editions">版本</a>
         <a class="nav-cta" href="https://github.com/lucius-24/ConfigShield-Releases/releases/tag/v1.0.0">下载离线包</a>
       </div>
@@ -658,7 +693,7 @@
         </div>
       </div>
       <div class="hero-metrics" aria-label="产品要点">
-        <div class="metric"><strong>Docker 离线包</strong><span>适合客户现场、内网、网盘和 U 盘交付。</span></div>
+        <div class="metric"><strong>Docker 离线包</strong><span>适合客户现场、隔离网络、网盘和 U 盘交付。</span></div>
         <div class="metric"><strong>8 台设备</strong><span>社区版默认授权，无授权文件也可使用基础能力。</span></div>
         <div class="metric"><strong>多厂商设备</strong><span>覆盖常见路由器、交换机、防火墙配置采集方向。</span></div>
         <div class="metric"><strong>闭环治理</strong><span>从备份、巡检、风险到报告输出形成连续证据链。</span></div>
@@ -701,35 +736,29 @@
       </div>
     </section>
 
-    <section id="showcase" class="showcase">
+    <section id="workflow">
       <div class="section-inner">
         <div class="section-head">
-          <p class="section-kicker">产品界面</p>
-          <h2>面向反复使用的运维工作台，信息密度清晰，状态一眼可见。</h2>
-          <p>以下界面使用演示数据，展示总览、设备、配置差异、巡检和安全合规等核心工作流。</p>
+          <p class="section-kicker">治理流程</p>
+          <h2>从设备接入到报告输出，把配置治理变成连续链路。</h2>
+          <p>ConfigShield 以设备为中心组织数据，将配置版本、巡检结果、风险发现和报告输出串联起来。</p>
         </div>
-        <div class="screens">
-          <figure class="screen-main">
-            <img src="assets/screenshots/dashboard.png" alt="ConfigShield 态势总览界面">
-            <figcaption><strong>态势总览</strong><span>设备、备份、巡检和风险状态集中展示。</span></figcaption>
-          </figure>
-          <div class="screen-stack">
-            <figure>
-              <img src="assets/screenshots/devices.png" alt="ConfigShield 设备管理界面">
-              <figcaption><strong>设备管理</strong><span>资产状态、连通状态和备份状态统一维护。</span></figcaption>
-            </figure>
-            <figure>
-              <img src="assets/screenshots/diff.png" alt="ConfigShield 配置差异界面">
-              <figcaption><strong>配置差异</strong><span>配置版本变化可追踪、可复盘。</span></figcaption>
-            </figure>
-            <figure>
-              <img src="assets/screenshots/inspections.png" alt="ConfigShield 设备巡检界面">
-              <figcaption><strong>设备巡检</strong><span>巡检任务和执行结果统一管理。</span></figcaption>
-            </figure>
-            <figure>
-              <img src="assets/screenshots/security.png" alt="ConfigShield 安全合规界面">
-              <figcaption><strong>安全合规</strong><span>风险发现、评分与整改闭环。</span></figcaption>
-            </figure>
+        <div class="flow">
+          <div class="flow-board" aria-label="配置治理流程图">
+            <div class="flow-line l1"></div>
+            <div class="flow-line l2"></div>
+            <div class="flow-line l3"></div>
+            <div class="flow-line l4"></div>
+            <div class="flow-node">设备资产<span>厂商 / 连接 / 分组</span></div>
+            <div class="flow-node">配置备份<span>版本 / 留存 / 失败追踪</span></div>
+            <div class="flow-node">设备巡检<span>模板 / 执行 / 结果</span></div>
+            <div class="flow-node">风险发现<span>分析 / 合规 / 整改</span></div>
+            <div class="flow-node">报告输出<span>审计 / 交付 / 复盘</span></div>
+          </div>
+          <div class="flow-cards">
+            <article class="flow-card"><h3>统一资产视角</h3><p>把多厂商设备、连接状态、备份状态和巡检状态收敛到统一平台。</p></article>
+            <article class="flow-card"><h3>配置版本证据链</h3><p>配置不再只是临时文件，而是可以按时间、设备和任务追踪的版本资产。</p></article>
+            <article class="flow-card"><h3>风险与报告闭环</h3><p>风险发现、整改判断和报告输出聚合在同一治理流程中，便于项目交付和持续审计。</p></article>
           </div>
         </div>
       </div>
@@ -766,7 +795,7 @@
       </div>
     </section>
 
-    <section class="delivery">
+    <section>
       <div class="section-inner">
         <div class="section-head">
           <p class="section-kicker">离线交付</p>
@@ -781,7 +810,7 @@
       </div>
     </section>
 
-    <section class="download">
+    <section>
       <div class="section-inner">
         <div class="download-panel">
           <div>
