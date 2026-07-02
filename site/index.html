@@ -98,25 +98,22 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
       min-width: 0;
     }
 
-    .brand-mark {
-      width: 36px;
-      height: 36px;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(46, 199, 255, 0.42);
-      border-radius: 8px;
-      background:
-        linear-gradient(135deg, rgba(46, 199, 255, 0.22), rgba(52, 211, 153, 0.08));
-      box-shadow: inset 0 0 24px rgba(46, 199, 255, 0.1);
-      color: #dff8ff;
-      font-weight: 900;
+    .brand img {
+      width: 190px;
+      height: 46px;
+      object-fit: contain;
+      object-position: left center;
     }
 
     .brand strong {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
       font-size: 19px;
       font-weight: 900;
       white-space: nowrap;
@@ -417,7 +414,11 @@
 
     .flow-board {
       min-height: 440px;
-      position: relative;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      align-content: center;
+      padding: 32px;
       border: 1px solid var(--line);
       border-radius: var(--radius);
       background:
@@ -429,41 +430,36 @@
     }
 
     .flow-node {
-      position: absolute;
-      min-width: 132px;
-      padding: 13px 14px;
+      position: relative;
+      min-height: 132px;
+      padding: 16px 14px;
       border: 1px solid rgba(46, 199, 255, 0.32);
       border-radius: 8px;
       background: rgba(7, 19, 31, 0.72);
       color: #eaf8ff;
       box-shadow: 0 14px 34px rgba(0, 0, 0, 0.24);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 6px;
     }
 
     .flow-node span {
       display: block;
-      margin-top: 4px;
       color: var(--muted);
       font-size: 12px;
+      line-height: 1.45;
     }
 
-    .flow-node:nth-child(1) { left: 8%; top: 12%; }
-    .flow-node:nth-child(2) { right: 10%; top: 18%; }
-    .flow-node:nth-child(3) { left: 18%; top: 46%; }
-    .flow-node:nth-child(4) { right: 12%; top: 54%; }
-    .flow-node:nth-child(5) { left: 34%; bottom: 10%; }
-
-    .flow-line {
+    .flow-node:not(:last-child)::after {
+      content: "";
       position: absolute;
+      left: calc(100% + 2px);
+      top: 50%;
+      width: 10px;
       height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(46, 199, 255, 0.55), transparent);
-      transform-origin: left center;
-      opacity: 0.72;
+      background: rgba(46, 199, 255, 0.5);
     }
-
-    .flow-line.l1 { width: 42%; left: 25%; top: 28%; transform: rotate(7deg); }
-    .flow-line.l2 { width: 34%; left: 46%; top: 47%; transform: rotate(44deg); }
-    .flow-line.l3 { width: 36%; left: 28%; top: 60%; transform: rotate(-18deg); }
-    .flow-line.l4 { width: 32%; left: 43%; top: 74%; transform: rotate(14deg); }
 
     .flow-cards {
       display: grid;
@@ -649,11 +645,20 @@
       }
 
       .flow-board {
-        min-height: 500px;
+        min-height: auto;
+        grid-template-columns: 1fr;
+        padding: 18px;
       }
 
       .flow-node {
-        min-width: 120px;
+        min-height: 96px;
+      }
+
+      .flow-node:not(:last-child)::after {
+        left: 50%;
+        top: calc(100% + 2px);
+        width: 2px;
+        height: 10px;
       }
 
       footer .section-inner {
@@ -667,7 +672,7 @@
   <header class="topbar">
     <nav class="nav" aria-label="主导航">
       <a class="brand" href="#top" aria-label="ConfigShield 首页">
-        <span class="brand-mark">CS</span>
+        <img src="assets/configshield-logo-cropped.png" alt="">
         <strong>ConfigShield</strong>
       </a>
       <div class="navlinks">
@@ -689,7 +694,7 @@
         <div class="hero-actions">
           <a class="button primary" href="https://github.com/lucius-24/ConfigShield-Releases/releases/download/v1.0.0/configshield-v1.0.0-offline-linux-amd64.tar.gz">下载离线安装包</a>
           <a class="button secondary" href="https://github.com/lucius-24/ConfigShield-Releases/releases/tag/v1.0.0">查看 GitHub Release</a>
-          <a class="button secondary" href="docs/ConfigShield-安装部署手册.md">安装部署手册</a>
+          <a class="button secondary" href="https://github.com/lucius-24/ConfigShield-Releases/blob/master/docs/ConfigShield-%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E6%89%8B%E5%86%8C.md">安装部署手册</a>
         </div>
       </div>
       <div class="hero-metrics" aria-label="产品要点">
@@ -743,12 +748,8 @@
           <h2>从设备接入到报告输出，把配置治理变成连续链路。</h2>
           <p>ConfigShield 以设备为中心组织数据，将配置版本、巡检结果、风险发现和报告输出串联起来。</p>
         </div>
-        <div class="flow">
-          <div class="flow-board" aria-label="配置治理流程图">
-            <div class="flow-line l1"></div>
-            <div class="flow-line l2"></div>
-            <div class="flow-line l3"></div>
-            <div class="flow-line l4"></div>
+          <div class="flow">
+            <div class="flow-board" aria-label="配置治理流程图">
             <div class="flow-node">设备资产<span>厂商 / 连接 / 分组</span></div>
             <div class="flow-node">配置备份<span>版本 / 留存 / 失败追踪</span></div>
             <div class="flow-node">设备巡检<span>模板 / 执行 / 结果</span></div>
@@ -820,7 +821,7 @@
           <div class="download-actions">
             <a class="button dark" href="https://github.com/lucius-24/ConfigShield-Releases/releases/download/v1.0.0/configshield-v1.0.0-offline-linux-amd64.tar.gz">下载离线包</a>
             <a class="button secondary" href="https://github.com/lucius-24/ConfigShield-Releases/releases/download/v1.0.0/configshield-v1.0.0-offline-linux-amd64.tar.gz.sha256">下载校验文件</a>
-            <a class="button secondary" href="docs/ConfigShield-安装部署手册.md">阅读安装手册</a>
+            <a class="button secondary" href="https://github.com/lucius-24/ConfigShield-Releases/blob/master/docs/ConfigShield-%E5%AE%89%E8%A3%85%E9%83%A8%E7%BD%B2%E6%89%8B%E5%86%8C.md">阅读安装手册</a>
           </div>
         </div>
       </div>
