@@ -102,7 +102,7 @@
     }
 
     .brand img {
-      width: 190px;
+      width: 198px;
       height: 46px;
       object-fit: contain;
       object-position: left center;
@@ -372,6 +372,8 @@
       margin: 0 0 12px;
       font-size: 20px;
       color: #ffffff;
+      word-break: keep-all;
+      overflow-wrap: normal;
     }
 
     .pain p,
@@ -407,16 +409,16 @@
 
     .flow {
       display: grid;
-      grid-template-columns: 0.95fr 1.05fr;
+      grid-template-columns: 1fr;
       gap: 18px;
       align-items: stretch;
     }
 
     .flow-board {
-      min-height: 440px;
+      min-height: 260px;
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 14px;
+      gap: 18px;
       align-content: center;
       padding: 32px;
       border: 1px solid var(--line);
@@ -431,8 +433,8 @@
 
     .flow-node {
       position: relative;
-      min-height: 132px;
-      padding: 16px 14px;
+      min-height: 126px;
+      padding: 18px 16px;
       border: 1px solid rgba(46, 199, 255, 0.32);
       border-radius: 8px;
       background: rgba(7, 19, 31, 0.72);
@@ -442,6 +444,10 @@
       flex-direction: column;
       justify-content: center;
       gap: 6px;
+      font-size: 18px;
+      font-weight: 900;
+      word-break: keep-all;
+      overflow-wrap: normal;
     }
 
     .flow-node span {
@@ -463,6 +469,7 @@
 
     .flow-cards {
       display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 14px;
     }
 
@@ -600,6 +607,11 @@
         grid-template-columns: 1fr;
       }
 
+      .flow-board,
+      .flow-cards {
+        grid-template-columns: 1fr;
+      }
+
       .download-actions {
         min-width: 0;
         flex-direction: row;
@@ -672,7 +684,7 @@
   <header class="topbar">
     <nav class="nav" aria-label="主导航">
       <a class="brand" href="#top" aria-label="ConfigShield 首页">
-        <img src="assets/configshield-logo-cropped.png" alt="">
+        <img src="assets/configshield-logo-transparent.png" alt="">
         <strong>ConfigShield</strong>
       </a>
       <div class="navlinks">
