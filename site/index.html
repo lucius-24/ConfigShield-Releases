@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ConfigShield 配置安全治理平台</title>
   <meta name="description" content="ConfigShield 是面向网络设备的配置安全治理平台，支持配置备份、巡检、差异分析、风险发现和报告输出。">
+  <link rel="icon" href="assets/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/favicon-180.png">
   <style>
     :root {
       --bg: #07131f;
@@ -219,6 +222,14 @@
       line-height: 1.02;
       letter-spacing: 0;
       font-weight: 900;
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+
+    .hero-title-en,
+    .hero-title-cn {
+      display: block;
+      white-space: nowrap;
     }
 
     .hero p {
@@ -635,6 +646,10 @@
         padding-top: 112px;
       }
 
+      .hero h1 {
+        font-size: clamp(38px, 11vw, 52px);
+      }
+
       .hero-metrics,
       .pain-grid,
       .feature-grid,
@@ -701,7 +716,10 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero-inner">
         <div class="eyebrow">NETWORK CONFIGURATION SECURITY</div>
-        <h1 id="hero-title">ConfigShield 配置安全治理平台</h1>
+        <h1 id="hero-title">
+          <span class="hero-title-en">ConfigShield</span>
+          <span class="hero-title-cn">配置安全治理平台</span>
+        </h1>
         <p>统一完成网络设备配置备份、巡检、差异分析、风险发现和报告输出，把分散的配置文件转化为可追踪、可审计、可治理的安全资产。</p>
         <div class="hero-actions">
           <a class="button primary" href="https://github.com/lucius-24/ConfigShield-Releases/releases/download/v1.0.0/configshield-v1.0.0-offline-linux-amd64.tar.gz">下载离线安装包</a>
